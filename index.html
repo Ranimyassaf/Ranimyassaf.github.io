@@ -335,6 +335,44 @@
             transform: translateY(-2px);
         }
 
+        /* Soft Skills Section */
+        .soft-skills-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .soft-skill-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+
+        .soft-skill-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.15);
+            border-color: var(--accent-bright);
+        }
+
+        .soft-skill-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .soft-skill-card h3 {
+            color: var(--accent-bright);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .soft-skill-card p {
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
         /* Projects Section */
         .projects-grid {
             display: grid;
@@ -545,6 +583,10 @@
                 grid-template-columns: 1fr;
             }
 
+            .soft-skills-grid {
+                grid-template-columns: 1fr;
+            }
+
             .contact-grid {
                 grid-template-columns: 1fr;
             }
@@ -599,6 +641,7 @@
             <ul id="navMenu">
                 <li><a href="#about">About</a></li>
                 <li><a href="#skills">Skills</a></li>
+                <li><a href="#soft-skills">Soft Skills</a></li>
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
@@ -711,6 +754,48 @@
                         <span class="skill-tag">Jupyter</span>
                         <span class="skill-tag">Google Colab</span>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Soft Skills Section -->
+    <section id="soft-skills">
+        <div class="container">
+            <div class="section-header">
+                <h2>Soft Skills</h2>
+                <p>Essential qualities that drive successful AI projects</p>
+            </div>
+            <div class="soft-skills-grid">
+                <div class="soft-skill-card">
+                    <div class="icon">💬</div>
+                    <h3>Effective Communication</h3>
+                    <p>Clearly articulating complex AI concepts and fostering effective dialogue with technical and non-technical stakeholders.</p>
+                </div>
+                <div class="soft-skill-card">
+                    <div class="icon">💡</div>
+                    <h3>Problem-Solving</h3>
+                    <p>Diagnosing intricate AI challenges with analytical rigor and implementing innovative, data-driven solutions.</p>
+                </div>
+                <div class="soft-skill-card">
+                    <div class="icon">👥</div>
+                    <h3>Collaborative Leadership</h3>
+                    <p>Guiding AI initiatives, fostering collaborative environments, and empowering teams to deliver high-impact results.</p>
+                </div>
+                <div class="soft-skill-card">
+                    <div class="icon">🤝</div>
+                    <h3>Cross-functional Collaboration</h3>
+                    <p>Working effectively within diverse teams, sharing insights, and integrating AI solutions with broader business objectives.</p>
+                </div>
+                <div class="soft-skill-card">
+                    <div class="icon">⚡</div>
+                    <h3>Rapid Adaptability</h3>
+                    <p>Quickly mastering new AI technologies, tools, and methodologies in a fast-evolving technical landscape.</p>
+                </div>
+                <div class="soft-skill-card">
+                    <div class="icon">🎯</div>
+                    <h3>Strategic Critical Thinking</h3>
+                    <p>Evaluating AI models and data critically, identifying biases, and making informed decisions for robust outcomes.</p>
                 </div>
             </div>
         </div>
@@ -855,7 +940,7 @@
                         <h3>GitHub</h3>
                         <p>Explore my code</p>
                     </a>
-                    <a href="mailto:ranimyasser5050@gmail.com" class="contact-card">
+                    <a href="/cdn-cgi/l/email-protection#ccbeada2a5a1b5adbfbfa9bef9fcf9fc8caba1ada5a0e2afa3a1" class="contact-card">
                         <div class="icon">📧</div>
                         <h3>Email</h3>
                         <p>Send me a message</p>
@@ -872,7 +957,7 @@
         </div>
     </footer>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // Mobile menu toggle
         function toggleMenu() {
             const menu = document.getElementById('navMenu');
@@ -914,10 +999,4 @@
             });
         }, observerOptions);
 
-        // Observe all sections
-        document.querySelectorAll('section').forEach(section => {
-            observer.observe(section);
-        });
-    </script>
-</body>
-</html>
+        // Observe all 
