@@ -76,7 +76,6 @@ nav {
 }
 nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; }
 .logo { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; color: var(--ink); text-decoration: none; }
-.logo span { color: var(--accent); }
 nav ul { list-style: none; display: flex; gap: 22px; margin: 0; padding: 0; }
 nav ul a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 0.92rem; }
 nav ul a:hover { color: var(--ink); }
@@ -106,15 +105,11 @@ nav ul a:hover { color: var(--ink); }
 .btn.ghost:hover { border-color: var(--accent); color: var(--accent); }
 .btn svg { width: 18px; height: 18px; flex: none; }
 
-.vision {
-  background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
-  padding: 18px; display: grid; gap: 12px; box-shadow: 0 1px 2px rgba(14, 26, 43, .04), 0 12px 32px -18px rgba(14, 26, 43, .18);
-}
-.vision-head { display: flex; justify-content: space-between; gap: 12px; color: var(--muted); }
-.vision-head .live::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--mark); margin-right: 8px; vertical-align: 1px; }
-.vision canvas { width: 100%; aspect-ratio: 1 / 0.95; max-width: 100%; display: block; border-radius: 8px; background: var(--accent-soft); }
-.caption { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
-.caption .out { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; }
+.hero-shot { margin: 0; display: grid; justify-items: center; gap: 14px; }
+.hero-shot .phone { max-width: 270px; }
+.hero-shot figcaption { font-size: 0.9rem; color: var(--muted); }
+.hero-shot figcaption b { color: var(--ink); }
+@media (max-width: 880px) { .hero-shot .phone { max-width: 230px; } }
 .caption .mode { color: var(--accent); }
 
 /* Sections */
@@ -223,7 +218,7 @@ footer { padding-block: 28px 40px; color: var(--muted); font-size: 0.85rem; bord
 <body>
 <nav aria-label="Main">
   <div class="wrap">
-    <a class="logo" href="#top">ranim<span>.</span>dev</a>
+    <a class="logo" href="#top">Ranim Yasser</a>
     <ul>
       <li><a href="#work">Work</a></li>
       <li><a href="#experience">Experience</a></li>
@@ -258,13 +253,9 @@ footer { padding-block: 28px 40px; color: var(--muted); font-size: 0.85rem; bord
       </div>
     </div>
 
-    <figure class="vision" aria-label="Illustration of hand landmark tracking from the sign language project">
-      <div class="vision-head mono"><span class="live">hand tracking</span><span>21 landmarks</span></div>
-      <canvas id="hand" width="480" height="456"></canvas>
-      <figcaption class="caption">
-        <span class="mono mode" id="mode">Sign → Text</span>
-        <span class="out" id="out">“Hello”</span>
-      </figcaption>
+    <figure class="hero-shot">
+      <div class="phone"><img src="img/nabra-home.jpg" alt="Home screen of Nabra, the sign language translation app" width="540" height="1200"></div>
+      <figcaption><b>Nabra</b> · Graduation project, Grade A</figcaption>
     </figure>
   </header>
 
@@ -553,73 +544,8 @@ footer { padding-block: 28px 40px; color: var(--muted); font-size: 0.85rem; bord
     });
   });
 
-  // Hand landmark canvas (MediaPipe's 21-point hand model)
-  var P = [[.50,.92],[.36,.84],[.26,.72],[.19,.61],[.13,.52],[.39,.52],[.36,.37],[.34,.27],[.33,.18],
-           [.50,.50],[.50,.33],[.50,.22],[.50,.12],[.60,.52],[.62,.36],[.63,.26],[.64,.18],
-           [.69,.57],[.74,.46],[.77,.38],[.80,.30]];
-  var E = [[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[5,9],[9,10],[10,11],[11,12],
-           [9,13],[13,14],[14,15],[15,16],[13,17],[17,18],[18,19],[19,20],[0,17]];
-  var cv = document.getElementById('hand'), ctx = cv.getContext('2d');
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  function size() {
-    var r = cv.getBoundingClientRect(), d = window.devicePixelRatio || 1;
-    cv.width = Math.round(r.width * d); cv.height = Math.round(r.height * d);
-  }
-  function col(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
-
-  function draw(t) {
-    var w = cv.width, h = cv.height, s = Math.min(w, h);
-    var ox = (w - s) / 2, oy = (h - s) / 2;
-    ctx.clearRect(0, 0, w, h);
-    var accent = col('--accent'), mark = col('--mark'), line = col('--line');
-    // grid
-    ctx.strokeStyle = line; ctx.lineWidth = 1;
-    for (var g = 1; g < 8; g++) {
-      ctx.beginPath(); ctx.moveTo(w * g / 8, 0); ctx.lineTo(w * g / 8, h); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(0, h * g / 8); ctx.lineTo(w, h * g / 8); ctx.stroke();
-    }
-    var pts = P.map(function (p, i) {
-      var f = i === 0 ? 0 : (i % 4 === 0 ? 1 : 0.5);
-      var dx = Math.sin(t / 900 + i * 0.6) * 0.006 * (1 + f);
-      var dy = Math.cos(t / 1100 + i * 0.4) * 0.006 * (1 + f);
-      return [ox + (p[0] + dx) * s, oy + (p[1] + dy) * s];
-    });
-    // bounding box
-    var xs = pts.map(function (p) { return p[0]; }), ys = pts.map(function (p) { return p[1]; });
-    var pad = s * 0.05, bx = Math.min.apply(0, xs) - pad, by = Math.min.apply(0, ys) - pad;
-    var bw = Math.max.apply(0, xs) + pad - bx, bh = Math.max.apply(0, ys) + pad - by;
-    ctx.setLineDash([6 * (s / 400), 5 * (s / 400)]); ctx.strokeStyle = accent; ctx.lineWidth = 1.5 * (s / 400);
-    ctx.strokeRect(bx, by, bw, bh); ctx.setLineDash([]);
-    ctx.fillStyle = accent; ctx.font = (12 * s / 400) + 'px "IBM Plex Mono", monospace';
-    ctx.fillText('hand 0.97', bx, by - 6 * (s / 400));
-    // bones
-    ctx.strokeStyle = accent; ctx.lineWidth = 3 * (s / 400); ctx.lineCap = 'round';
-    E.forEach(function (e) {
-      ctx.beginPath(); ctx.moveTo(pts[e[0]][0], pts[e[0]][1]); ctx.lineTo(pts[e[1]][0], pts[e[1]][1]); ctx.stroke();
-    });
-    // joints
-    pts.forEach(function (p, i) {
-      ctx.beginPath(); ctx.arc(p[0], p[1], (i % 4 === 0 && i ? 6 : 4.5) * (s / 400), 0, Math.PI * 2);
-      ctx.fillStyle = mark; ctx.fill();
-    });
-  }
-
-  size(); draw(0);
-  window.addEventListener('resize', function () { size(); draw(performance.now()); });
-  if (!reduce) {
-    (function loop(t) { draw(t); requestAnimationFrame(loop); })(0);
-  }
-
-  // Cycle translation modes
-  var modes = [['Sign → Text', '“Hello”'], ['Sign → Voice', '🔊 “Thank you”'], ['Text → Sign', 'Avatar signing “Welcome”'],
-               ['Speech → Text', '“How are you?”'], ['Text → Speech', '🔊 “Nice to meet you”']];
-  modes[1][1] = '“Thank you” (spoken)'; modes[4][1] = '“Nice to meet you” (spoken)';
-  var mi = 0, m = document.getElementById('mode'), o = document.getElementById('out');
-  if (!reduce) setInterval(function () {
-    mi = (mi + 1) % modes.length; m.textContent = modes[mi][0]; o.textContent = modes[mi][1];
-  }, 2600);
 })();
 </script>
+
 </body>
 </html>
