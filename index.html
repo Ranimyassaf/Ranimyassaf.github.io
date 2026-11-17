@@ -17,33 +17,47 @@ img { max-width: 100%; }
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: a single reading column (max 1080px). Hero pairs the intro with a live hand-landmark canvas,
-   the signature of the graduation project. Sections follow in the order a recruiter scans. */
+/* Layout: a single reading column (max 1080px). Hero pairs the intro with a portrait over floating color shapes.
+   Each section has its own color (--sec); one violet → pink → orange gradient ties the page together. */
 :root {
-  --bg: #f6f7f9;
+  --bg: #fbfaff;
   --surface: #ffffff;
-  --ink: #0e1a2b;         /* deep navy text */
-  --muted: #586273;
-  --line: #e2e5ea;
-  --accent: #134e7a;      /* navy-teal */
-  --accent-soft: #e8eff5;
-  --mark: #1b998b;        /* teal, used sparingly */
-  --chip: #f0f2f5;
-  --phone: #1c2533;
+  --ink: #17153a;
+  --muted: #5d5b7a;
+  --line: #e9e6f5;
+  --accent: #5b3fd9;
+  --accent-soft: #efebff;
+  --mark: #0e9f94;
+  --chip: #f3f1fb;
+  --phone: #1d1a3a;
   --on-accent: #ffffff;
+  --c-violet: #5b3fd9;
+  --c-pink: #d6337f;
+  --c-orange: #e0602a;
+  --c-teal: #0e9f94;
+  --c-blue: #2f6fe0;
+  --c-amber: #c98a00;
+  --grad: linear-gradient(120deg, #4a2fc4 0%, #c2337a 55%, #d4561f 100%);
+  --grad-text: linear-gradient(120deg, #5b3fd9 0%, #d6337f 55%, #e0602a 100%);
   --font-display: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
   --font-body: "Inter", "Segoe UI", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0b1119; --surface: #121a25; --ink: #e8edf3; --muted: #9aa5b4; --line: #222c39;
-    --accent: #6fb3e0; --accent-soft: #15283a; --mark: #3cc7b4; --chip: #18212d; --phone: #05080c; --on-accent: #0b1119; color-scheme: dark;
+    --bg: #0e0c1d; --surface: #17152b; --ink: #eeecff; --muted: #a9a6c8; --line: #2a2745;
+    --accent: #9d8cff; --accent-soft: #241f45; --mark: #3fd6c6; --chip: #211e3a; --phone: #05040c; --on-accent: #0e0c1d;
+    --c-violet: #9d8cff; --c-pink: #ff7bb5; --c-orange: #ff9a6b; --c-teal: #3fd6c6; --c-blue: #6aaeff; --c-amber: #ffc94d;
+    --grad-text: linear-gradient(120deg, #a898ff 0%, #ff7bb5 55%, #ffa071 100%);
+    color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0b1119; --surface: #121a25; --ink: #e8edf3; --muted: #9aa5b4; --line: #222c39;
-  --accent: #6fb3e0; --accent-soft: #15283a; --mark: #3cc7b4; --chip: #18212d; --phone: #05080c; --on-accent: #0b1119; color-scheme: dark;
+  --bg: #0e0c1d; --surface: #17152b; --ink: #eeecff; --muted: #a9a6c8; --line: #2a2745;
+  --accent: #9d8cff; --accent-soft: #241f45; --mark: #3fd6c6; --chip: #211e3a; --phone: #05040c; --on-accent: #0e0c1d;
+  --c-violet: #9d8cff; --c-pink: #ff7bb5; --c-orange: #ff9a6b; --c-teal: #3fd6c6; --c-blue: #6aaeff; --c-amber: #ffc94d;
+  --grad-text: linear-gradient(120deg, #a898ff 0%, #ff7bb5 55%, #ffa071 100%);
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -207,6 +221,128 @@ section { padding-block: 72px; border-top: 1px solid var(--line); }
 .copy:hover { background: var(--accent-soft); }
 footer { padding-block: 28px 40px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 
+/* ===== Color ===== */
+html, body { overflow-x: clip; }
+.progress {
+  position: fixed; top: env(safe-area-inset-top, 0px); left: 0; right: 0; height: 3px; z-index: 20;
+  background: var(--grad); transform-origin: 0 50%; transform: scaleX(0); pointer-events: none;
+}
+nav ul a { position: relative; }
+nav ul a::after { content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 2px; border-radius: 2px; background: var(--grad); transform: scaleX(0); transform-origin: left; transition: transform .25s ease; }
+nav ul a:hover::after { transform: scaleX(1); }
+
+.hero { position: relative; isolation: isolate; }
+.blobs { position: absolute; inset: -60px -8vw -20px; z-index: -1; pointer-events: none; }
+.blob { position: absolute; border-radius: 50%; filter: blur(64px); opacity: .32; animation: float 14s ease-in-out infinite alternate; }
+.b1 { width: 340px; height: 340px; background: var(--c-violet); top: 0; right: 6%; }
+.b2 { width: 260px; height: 260px; background: var(--c-pink); top: 48%; right: 28%; animation-delay: -5s; }
+.b3 { width: 240px; height: 240px; background: var(--c-orange); bottom: -10%; right: 0; animation-delay: -9s; opacity: .24; }
+.b4 { width: 220px; height: 220px; background: var(--c-teal); top: 10%; left: -6%; animation-delay: -3s; opacity: .16; }
+@keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(34px, -28px) scale(1.14); } }
+
+.hero h1 .grad { background: var(--grad-text); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero .role { color: var(--c-violet); }
+.stat:nth-child(1) b { color: var(--c-violet); }
+.stat:nth-child(2) b { color: var(--c-pink); }
+.stat:nth-child(3) b { color: var(--c-orange); }
+.btn.primary { background: var(--grad); background-size: 180% 100%; background-position: 0% 50%; border: 0; color: #fff; transition: background-position .4s ease, transform .2s ease, box-shadow .2s ease; }
+.btn.primary:hover { background: var(--grad); background-size: 180% 100%; background-position: 100% 50%; transform: translateY(-2px); box-shadow: 0 12px 24px -12px #c2337a; }
+.btn.ghost { transition: border-color .2s, color .2s, transform .2s; }
+.btn.ghost:hover { transform: translateY(-2px); }
+
+.portrait::before { background: var(--grad); border: 0; opacity: .9; animation: tilt 9s ease-in-out infinite alternate; }
+.portrait img { animation: bob 7s ease-in-out infinite; }
+@keyframes tilt { from { transform: rotate(0deg); } to { transform: rotate(3deg); } }
+@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+section { --sec: var(--accent); }
+#work { --sec: var(--c-violet); }
+#pharmacy { --sec: var(--c-teal); }
+#pharmadash { --sec: var(--c-orange); }
+#projects { --sec: var(--c-pink); }
+#experience { --sec: var(--c-blue); }
+#skills { --sec: var(--c-violet); }
+#education { --sec: var(--c-pink); }
+.sec-head .eyebrow { color: var(--sec); }
+.sec-head h2::after { width: 72px; height: 4px; background: linear-gradient(90deg, var(--sec), color-mix(in srgb, var(--sec) 15%, transparent)); }
+.badge { background: color-mix(in srgb, var(--sec) 12%, var(--surface)); color: var(--sec); border-radius: 999px; }
+.badge.grade { background: var(--sec); color: var(--on-accent); }
+.modes { border-color: color-mix(in srgb, var(--sec) 22%, var(--line)); }
+.modes .pair { color: var(--sec); font-weight: 500; }
+.modes li { transition: background .2s ease; }
+.modes li:hover { background: color-mix(in srgb, var(--sec) 7%, var(--surface)); }
+.featured .tech .chip { background: color-mix(in srgb, var(--sec) 10%, var(--surface)); }
+.phone { box-shadow: 0 26px 50px -26px color-mix(in srgb, var(--sec, var(--accent)) 70%, transparent); transition: transform .35s cubic-bezier(.2,.7,.2,1); }
+.shot:nth-child(1):hover .phone { transform: translateY(-10px) rotate(-1.5deg); }
+.shot:nth-child(2):hover .phone { transform: translateY(-10px); }
+.shot:nth-child(3):hover .phone { transform: translateY(-10px) rotate(1.5deg); }
+.links .btn.primary { background: var(--sec); color: var(--on-accent); }
+.links .btn.primary:hover { background: var(--sec); box-shadow: 0 12px 24px -12px var(--sec); }
+
+.project:nth-child(1) { --pc: var(--c-violet); }
+.project:nth-child(2) { --pc: var(--c-teal); }
+.project:nth-child(3) { --pc: var(--c-orange); }
+.project { border-top: 4px solid var(--pc); transition: transform .3s ease, box-shadow .3s ease, opacity .7s ease; }
+.project:hover { transform: translateY(-6px); box-shadow: 0 22px 44px -26px var(--pc); }
+.project .metric { color: var(--pc); }
+.project .chip { background: color-mix(in srgb, var(--pc) 10%, var(--surface)); }
+
+.timeline li { position: relative; padding-left: 26px; transition: background .2s ease; border-radius: 8px; }
+.timeline li::before { content: ""; position: absolute; left: 4px; top: 25px; width: 10px; height: 10px; border-radius: 50%; background: var(--dot); box-shadow: 0 0 0 4px color-mix(in srgb, var(--dot) 18%, transparent); }
+.timeline li:nth-child(4n+1) { --dot: var(--c-violet); }
+.timeline li:nth-child(4n+2) { --dot: var(--c-pink); }
+.timeline li:nth-child(4n+3) { --dot: var(--c-teal); }
+.timeline li:nth-child(4n+4) { --dot: var(--c-orange); }
+.timeline li:hover { background: color-mix(in srgb, var(--dot) 6%, transparent); }
+.timeline .org { color: var(--dot); }
+
+.skills > div:nth-child(6n+1) { --cc: var(--c-violet); }
+.skills > div:nth-child(6n+2) { --cc: var(--c-pink); }
+.skills > div:nth-child(6n+3) { --cc: var(--c-teal); }
+.skills > div:nth-child(6n+4) { --cc: var(--c-orange); }
+.skills > div:nth-child(6n+5) { --cc: var(--c-blue); }
+.skills > div:nth-child(6n+6) { --cc: var(--c-amber); }
+.skills .eyebrow { color: var(--cc); }
+.skills .chip { background: color-mix(in srgb, var(--cc) 13%, var(--surface)); color: color-mix(in srgb, var(--cc) 55%, var(--ink)); transition: transform .2s ease, background .2s ease; }
+.skills .chip:hover { transform: translateY(-2px); background: color-mix(in srgb, var(--cc) 22%, var(--surface)); }
+.certs li { transition: padding-left .2s ease, color .2s ease; }
+.certs li:hover { padding-left: 6px; color: var(--sec); }
+
+.contact {
+  background: var(--grad); background-size: 220% 220%; animation: shift 14s ease infinite;
+  color: #fff; border: 0; border-radius: 24px; margin-block: 24px 56px;
+  padding: clamp(36px, 6vw, 64px) clamp(20px, 5vw, 56px);
+}
+.contact .eyebrow { color: rgba(255, 255, 255, .85); }
+.contact .lede { color: rgba(255, 255, 255, .9); }
+.contact .mail code { background: rgba(255, 255, 255, .14); border-color: rgba(255, 255, 255, .35); color: #fff; }
+.contact .copy { border-color: rgba(255, 255, 255, .75); color: #fff; }
+.contact .copy:hover { background: rgba(255, 255, 255, .16); }
+.contact .btn.ghost { background: #fff; color: #3a2490; border-color: #fff; }
+.contact a:focus-visible, .contact button:focus-visible { outline-color: #fff; }
+@keyframes shift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+/* ===== Motion ===== */
+.hero > div:not(.blobs) > * { animation: rise .8s cubic-bezier(.2,.7,.2,1) both; }
+.hero > div:not(.blobs) > *:nth-child(2) { animation-delay: .08s; }
+.hero > div:not(.blobs) > *:nth-child(3) { animation-delay: .16s; }
+.hero > div:not(.blobs) > *:nth-child(4) { animation-delay: .24s; }
+.hero > div:not(.blobs) > *:nth-child(5) { animation-delay: .32s; }
+.hero > div:not(.blobs) > *:nth-child(6) { animation-delay: .4s; }
+.hero .portrait { animation: pop 1s cubic-bezier(.2,.7,.2,1) .15s both; }
+@keyframes rise { from { opacity: 0; transform: translateY(18px); } }
+@keyframes pop { from { opacity: 0; transform: translateY(24px) scale(.96); } }
+.sec-head, .featured, .shots, .project, .timeline li, .skills > div, .two > div, .contact { transition-property: opacity, transform, box-shadow, background, padding-left; transition-duration: .7s, .7s, .3s, .2s, .2s; transition-timing-function: cubic-bezier(.2,.7,.2,1); }
+.project:hover, .timeline li:hover { transition-duration: .3s; }
+.pre { opacity: 0; transform: translateY(28px); }
+.sec-head h2::after { transform-origin: left; transition: transform .8s cubic-bezier(.2,.7,.2,1) .2s; }
+.sec-head.pre h2::after { transform: scaleX(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .pre { opacity: 1; transform: none; }
+}
+
 @media (max-width: 880px) {
   .hero, .featured, .two { grid-template-columns: 1fr; }
   .hero { padding-block: 48px 40px; gap: 36px; }
@@ -221,6 +357,7 @@ footer { padding-block: 28px 40px; color: var(--muted); font-size: 0.85rem; bord
 
 </head>
 <body>
+<div class="progress" id="progress" aria-hidden="true"></div>
 <nav aria-label="Main">
   <div class="wrap">
     <a class="logo" href="#top">Ranim Yasser</a>
@@ -235,9 +372,10 @@ footer { padding-block: 28px 40px; color: var(--muted); font-size: 0.85rem; bord
 
 <main class="wrap" id="top">
   <header class="hero">
+    <div class="blobs" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span><span class="blob b4"></span></div>
     <div>
       <p class="eyebrow">Alexandria, Egypt · Open to work</p>
-      <h1>Ranim Yasser</h1>
+      <h1>Ranim <span class="grad">Yasser</span></h1>
       <p class="role">Software Engineer &amp; Mobile Developer</p>
       <p class="lede">I build mobile and full-stack apps with Flutter, React Native and FastAPI, and I like putting AI models into apps people actually use. My graduation project translates sign language in real time.</p>
       <div class="stats">
@@ -546,6 +684,50 @@ footer { padding-block: 28px 40px; color: var(--muted); font-size: 0.85rem; bord
         btn.textContent = 'Press Ctrl+C';
       }
     });
+  });
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Scroll progress bar
+  var bar = document.getElementById('progress');
+  function onScroll() {
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.transform = 'scaleX(' + (h > 0 ? Math.min(1, window.scrollY / h) : 0) + ')';
+  }
+  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  if (reduce) return;
+
+  // Count up the hero numbers
+  document.querySelectorAll('.stat b').forEach(function (b) {
+    var n = parseInt(b.textContent, 10);
+    if (isNaN(n)) return;
+    var t0 = performance.now();
+    (function tick(t) {
+      var p = Math.min(1, (t - t0) / 1200);
+      b.textContent = Math.round(n * (1 - Math.pow(1 - p, 3)));
+      if (p < 1) requestAnimationFrame(tick);
+    })(t0);
+  });
+
+  // Fade sections in as they scroll into view (only those below the first screen)
+  if (!('IntersectionObserver' in window)) return;
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      var el = e.target;
+      el.classList.remove('pre');
+      io.unobserve(el);
+      setTimeout(function () { el.style.transitionDelay = ''; }, 1200);
+    });
+  }, { rootMargin: '0px 0px -8% 0px' });
+  var vh = window.innerHeight;
+  document.querySelectorAll('.sec-head, .featured, .shots, .project, .timeline li, .skills > div, .two > div, .contact').forEach(function (el) {
+    if (el.getBoundingClientRect().top < vh) return;
+    var sibs = Array.prototype.indexOf.call(el.parentNode.children, el);
+    if (el.matches('.project, .timeline li, .skills > div, .two > div')) el.style.transitionDelay = Math.min(sibs, 5) * 80 + 'ms';
+    el.classList.add('pre');
+    io.observe(el);
   });
 
 })();
